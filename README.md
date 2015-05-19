@@ -6,8 +6,9 @@ Supported:
 * Google
 
 Adding support for more providers:
+
 The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialauth) which acts as a wrapper for multiple OAuth integrations. Hence adding more integrations is very little effort. 
-You will need to add a [provider](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) & a maven profile (use `Google` implementation for reference).
+You will need to add a [provider](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) & a [maven profile](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/pom.xml#L65) (use `Google` implementation for reference).
 
 ## Requirements
 This needs GoCD >= v15.2 which is due release as of writing.
