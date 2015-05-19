@@ -34,5 +34,5 @@ This needs GoCD >= v15.2 which is due release as of writing.
 
 [1]: images/list-plugin.png  "List Plugin"
 [2]: images/configure-plugin.png  "Configure Plugin"
-[2]: images/github-login.png  "Authorize GitHub Login"
-[2]: images/successful-login.png  "On Successful Login"
+[3]: images/github-login.png  "Authorize GitHub Login"
+[4]: images/successful-login.png  "On Successful Login"
