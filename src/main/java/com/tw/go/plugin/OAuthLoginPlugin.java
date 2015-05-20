@@ -203,6 +203,9 @@ public class OAuthLoginPlugin implements GoPlugin {
         Map<String, Object> requestMap = new HashMap<String, Object>();
         requestMap.put("plugin-id", provider.getPluginId());
         GoApiResponse response = goApplicationAccessor.submit(createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap)));
+        if (response.responseBody() == null || response.responseBody().trim().isEmpty()) {
+            throw new RuntimeException("plugin is not configured. please provide plugin settings.");
+        }
         Map<String, String> responseBodyMap = (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
         return new PluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET));
     }
