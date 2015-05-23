@@ -291,7 +291,8 @@ public class OAuthLoginPlugin implements GoPlugin {
     }
 
     private void authenticateUser(User user) {
-        final Map<String, String> userMap = getUserMap(user.getUsername(), user.getDisplayName(), user.getEmailId());
+        final Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put("user", getUserMap(user.getUsername(), user.getDisplayName(), user.getEmailId()));
         GoApiRequest authenticateUserRequest = createGoApiRequest(GO_REQUEST_AUTHENTICATE_USER, JSONUtils.toJSON(userMap));
         GoApiResponse authenticateUserResponse = goApplicationAccessor.submit(authenticateUserRequest);
         // handle error
