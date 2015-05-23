@@ -34,10 +34,10 @@ This needs GoCD >= v15.2 which is due release as of writing.
 ![Pipeline Dashboard][4]
 
 - `GitHub` plugin supports user search. So you can search users & add them.
-![Add User][4]
+![Add User][5]
 
 [1]: images/list-plugin.png  "List Plugin"
 [2]: images/configure-plugin.png  "Configure Plugin"
 [3]: images/github-login.png  "Authorize GitHub Login"
 [4]: images/successful-login.png  "On Successful Login"
-[4]: images/add-user.png  "Add User"
+[5]: images/add-user.png  "Add User"
