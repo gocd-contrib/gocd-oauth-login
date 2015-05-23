@@ -32,11 +32,15 @@ public class OAuthLoginPlugin implements GoPlugin {
     public static final String PLUGIN_SETTINGS_SERVER_BASE_URL = "server_base_url";
     public static final String PLUGIN_SETTINGS_CONSUMER_KEY = "consumer_key";
     public static final String PLUGIN_SETTINGS_CONSUMER_SECRET = "consumer_secret";
+    public static final String PLUGIN_SETTINGS_USERNAME = "username";
+    public static final String PLUGIN_SETTINGS_PASSWORD = "password";
+    public static final String PLUGIN_SETTINGS_OAUTH_TOKEN = "oauth_token";
 
     public static final String PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
     public static final String PLUGIN_SETTINGS_GET_VIEW = "go.plugin-settings.get-view";
     public static final String PLUGIN_SETTINGS_VALIDATE_CONFIGURATION = "go.plugin-settings.validate-configuration";
     public static final String PLUGIN_CONFIGURATION = "go.authentication.plugin-configuration";
+    public static final String SEARCH_USER = "go.authentication.search-user";
     public static final String WEB_REQUEST_INDEX = "index";
     public static final String WEB_REQUEST_AUTHENTICATE = "authenticate";
 
@@ -87,6 +91,8 @@ public class OAuthLoginPlugin implements GoPlugin {
         } else if (requestName.equals(PLUGIN_CONFIGURATION)) {
             Map<String, Object> configuration = getPluginConfiguration();
             return renderJSON(SUCCESS_RESPONSE_CODE, configuration);
+        } else if (requestName.equals(SEARCH_USER)) {
+            return handleSearchUserRequest(goPluginApiRequest);
         } else if (requestName.equals(WEB_REQUEST_INDEX)) {
             return handleSetupLoginWebRequest(goPluginApiRequest);
         } else if (requestName.equals(WEB_REQUEST_AUTHENTICATE)) {
@@ -172,8 +178,24 @@ public class OAuthLoginPlugin implements GoPlugin {
         Map<String, Object> configuration = new HashMap<String, Object>();
         configuration.put("display-name", provider.getName());
         configuration.put("supports-password-based-authentication", false);
-        configuration.put("supports-user-search", false);
+        configuration.put("supports-user-search", provider.supportsUserSearch());
         return configuration;
+    }
+
+    private GoPluginApiResponse handleSearchUserRequest(GoPluginApiRequest goPluginApiRequest) {
+        Map<String, String> requestBodyMap = (Map<String, String>) JSONUtils.fromJSON(goPluginApiRequest.requestBody());
+        String searchTerm = requestBodyMap.get("search-term");
+        PluginSettings pluginSettings = getPluginSettings();
+        List<User> users = provider.searchUser(pluginSettings, searchTerm);
+        if (users == null || users.isEmpty()) {
+            return renderJSON(SUCCESS_RESPONSE_CODE, null);
+        } else {
+            List<Map> searchResults = new ArrayList<Map>();
+            for (User user : users) {
+                searchResults.add(getUserMap(user));
+            }
+            return renderJSON(SUCCESS_RESPONSE_CODE, searchResults);
+        }
     }
 
     private GoPluginApiResponse handleSetupLoginWebRequest(GoPluginApiRequest goPluginApiRequest) {
@@ -207,7 +229,9 @@ public class OAuthLoginPlugin implements GoPlugin {
             throw new RuntimeException("plugin is not configured. please provide plugin settings.");
         }
         Map<String, String> responseBodyMap = (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
-        return new PluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET));
+        return new PluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY),
+                responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET), responseBodyMap.get(PLUGIN_SETTINGS_USERNAME),
+                responseBodyMap.get(PLUGIN_SETTINGS_PASSWORD), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN));
     }
 
     private GoPluginApiResponse handleAuthenticateWebRequest(final GoPluginApiRequest goPluginApiRequest) {
@@ -292,7 +316,7 @@ public class OAuthLoginPlugin implements GoPlugin {
 
     private void authenticateUser(User user) {
         final Map<String, Object> userMap = new HashMap<String, Object>();
-        userMap.put("user", getUserMap(user.getUsername(), user.getDisplayName(), user.getEmailId()));
+        userMap.put("user", getUserMap(user));
         GoApiRequest authenticateUserRequest = createGoApiRequest(GO_REQUEST_AUTHENTICATE_USER, JSONUtils.toJSON(userMap));
         GoApiResponse authenticateUserResponse = goApplicationAccessor.submit(authenticateUserRequest);
         // handle error
@@ -302,11 +326,11 @@ public class OAuthLoginPlugin implements GoPlugin {
         return String.format("%s/go/plugin/interact/%s/authenticate", serverBaseURL, provider.getPluginId());
     }
 
-    private Map<String, String> getUserMap(String username, String displayName, String emailId) {
+    private Map<String, String> getUserMap(User user) {
         Map<String, String> userMap = new HashMap<String, String>();
-        userMap.put("username", username);
-        userMap.put("display-name", displayName);
-        userMap.put("email-id", emailId);
+        userMap.put("username", user.getUsername());
+        userMap.put("display-name", user.getDisplayName());
+        userMap.put("email-id", user.getEmailId());
         return userMap;
     }
 

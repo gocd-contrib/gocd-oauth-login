@@ -1,8 +1,11 @@
 package com.tw.go.plugin.provider.google;
 
+import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import org.brickred.socialauth.Profile;
+
+import java.util.List;
 
 public class GoogleProvider implements Provider {
     @Override
@@ -35,5 +38,15 @@ public class GoogleProvider implements Provider {
         String emailId = profile.getEmail();
         String fullName = profile.getFullName();
         return new User(emailId, fullName, emailId);
+    }
+
+    @Override
+    public boolean supportsUserSearch() {
+        return false;
+    }
+
+    @Override
+    public List<User> searchUser(PluginSettings pluginSettings, String searchTerm) {
+        return null;
     }
 }

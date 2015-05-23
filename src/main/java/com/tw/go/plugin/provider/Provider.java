@@ -1,7 +1,10 @@
 package com.tw.go.plugin.provider;
 
+import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import org.brickred.socialauth.Profile;
+
+import java.util.List;
 
 public interface Provider {
     public String getPluginId();
@@ -15,4 +18,8 @@ public interface Provider {
     public String getConsumerSecretPropertyName();
 
     public User getUser(Profile profile);
+
+    public boolean supportsUserSearch();
+
+    public List<User> searchUser(PluginSettings pluginSettings, String searchTerm);
 }
