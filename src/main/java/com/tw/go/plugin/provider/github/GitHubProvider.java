@@ -26,6 +26,11 @@ public class GitHubProvider implements Provider {
     }
 
     @Override
+    public String getImageURL() {
+        return "https://assets-cdn.github.com/favicon.ico";
+    }
+
+    @Override
     public String getProviderName() {
         return "github";
     }

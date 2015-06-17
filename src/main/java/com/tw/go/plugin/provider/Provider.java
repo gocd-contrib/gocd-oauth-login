@@ -11,6 +11,8 @@ public interface Provider {
 
     public String getName();
 
+    public String getImageURL();
+
     public String getProviderName();
 
     public String getConsumerKeyPropertyName();

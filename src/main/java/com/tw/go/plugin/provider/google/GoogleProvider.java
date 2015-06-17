@@ -19,6 +19,11 @@ public class GoogleProvider implements Provider {
     }
 
     @Override
+    public String getImageURL() {
+        return "http://icons.iconarchive.com/icons/chrisbanks2/gCons/32/google-plus-icon.png";
+    }
+
+    @Override
     public String getProviderName() {
         return "googleplus";
     }

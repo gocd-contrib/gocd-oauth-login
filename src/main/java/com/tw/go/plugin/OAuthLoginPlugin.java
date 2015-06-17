@@ -177,6 +177,7 @@ public class OAuthLoginPlugin implements GoPlugin {
     private Map<String, Object> getPluginConfiguration() {
         Map<String, Object> configuration = new HashMap<String, Object>();
         configuration.put("display-name", provider.getName());
+        configuration.put("display-image-url", provider.getImageURL());
         configuration.put("supports-password-based-authentication", false);
         configuration.put("supports-user-search", provider.supportsUserSearch());
         return configuration;
