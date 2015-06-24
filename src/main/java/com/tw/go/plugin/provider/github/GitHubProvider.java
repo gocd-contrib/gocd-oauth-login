@@ -54,11 +54,6 @@ public class GitHubProvider implements Provider {
     }
 
     @Override
-    public boolean supportsUserSearch() {
-        return true;
-    }
-
-    @Override
     public List<User> searchUser(PluginSettings pluginSettings, String searchTerm) {
         List<User> users = new ArrayList<User>();
         try {

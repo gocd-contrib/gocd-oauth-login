@@ -46,11 +46,6 @@ public class GoogleProvider implements Provider {
     }
 
     @Override
-    public boolean supportsUserSearch() {
-        return false;
-    }
-
-    @Override
     public List<User> searchUser(PluginSettings pluginSettings, String searchTerm) {
         return null;
     }

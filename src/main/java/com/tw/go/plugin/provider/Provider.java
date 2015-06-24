@@ -21,7 +21,5 @@ public interface Provider {
 
     public User getUser(Profile profile);
 
-    public boolean supportsUserSearch();
-
     public List<User> searchUser(PluginSettings pluginSettings, String searchTerm);
 }

@@ -180,7 +180,6 @@ public class OAuthLoginPlugin implements GoPlugin {
         configuration.put("display-image-url", provider.getImageURL());
         configuration.put("supports-web-based-authentication", true);
         configuration.put("supports-password-based-authentication", false);
-        configuration.put("supports-user-search", provider.supportsUserSearch());
         return configuration;
     }
 
