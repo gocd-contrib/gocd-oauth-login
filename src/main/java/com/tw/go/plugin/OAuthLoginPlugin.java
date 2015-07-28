@@ -209,7 +209,7 @@ public class OAuthLoginPlugin implements GoPlugin {
             socialAuthConfiguration.load(oauthConsumerProperties);
             SocialAuthManager manager = new SocialAuthManager();
             manager.setSocialAuthConfig(socialAuthConfiguration);
-            String redirectURL = manager.getAuthenticationUrl(provider.getProviderName(), getURL(pluginSettings.getServerBaseURL()), Permission.ALL);
+            String redirectURL = manager.getAuthenticationUrl(provider.getProviderName(), getURL(pluginSettings.getServerBaseURL()), Permission.AUTHENTICATE_ONLY);
 
             store(manager);
 
