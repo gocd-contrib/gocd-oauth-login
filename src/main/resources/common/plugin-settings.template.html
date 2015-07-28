@@ -28,3 +28,8 @@
     <input type="password" ng-model="oauth_token" ng-required="true"/>
     <span class="form_error" ng-show="GOINPUTNAME[oauth_token].$error.server">{{ GOINPUTNAME[oauth_token].$error.server }}</span>
 </div>
+<div class="form_item_block">
+    <label>Username Regular Expression:</label>
+    <input type="text" ng-model="username_regex" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[username_regex].$error.server">{{ GOINPUTNAME[username_regex].$error.server }}</span>
+</div>
