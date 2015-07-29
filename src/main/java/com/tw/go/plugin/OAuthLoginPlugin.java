@@ -12,6 +12,7 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.FieldValidator;
 import com.tw.go.plugin.util.JSONUtils;
+import com.tw.go.plugin.util.RegexUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.brickred.socialauth.*;
@@ -19,7 +20,6 @@ import org.brickred.socialauth.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -54,6 +54,7 @@ public class OAuthLoginPlugin implements GoPlugin {
 
     public static final int SUCCESS_RESPONSE_CODE = 200;
     public static final int REDIRECT_RESPONSE_CODE = 302;
+    public static final int UNAUTHORIZED_RESPONSE_CODE = 401;
     public static final int NOT_FOUND_ERROR_RESPONSE_CODE = 404;
     public static final int INTERNAL_ERROR_RESPONSE_CODE = 500;
 
@@ -250,12 +251,11 @@ public class OAuthLoginPlugin implements GoPlugin {
             AuthProvider authProvider = manager.connect(goPluginApiRequest.requestParameters());
             Profile profile = authProvider.getUserProfile();
             User user = provider.getUser(profile);
-            String usernameRegex = pluginSettings.getUsernameRegex();
-            if (usernameRegex != "" && !Pattern.matches(usernameRegex, user.getUsername())) {
-                throw new RuntimeException(
-                    String.format("Username %s does not match usernameRegex", user.getUsername())
-                );
+
+            if (!RegexUtils.matchesRegex(user.getUsername(), pluginSettings.getUsernameRegex())) {
+                return renderJSON(UNAUTHORIZED_RESPONSE_CODE, null);
             }
+
             authenticateUser(user);
 
             Map<String, String> responseHeaders = new HashMap<String, String>();
