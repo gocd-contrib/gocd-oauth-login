@@ -1,5 +1,7 @@
 package com.tw.go.plugin;
 
+import java.util.regex.Pattern;
+
 public class PluginSettings {
     private String serverBaseURL;
     private String consumerKey;
@@ -7,14 +9,16 @@ public class PluginSettings {
     private String username;
     private String password;
     private String oauthToken;
+    private String usernameRegex;
 
-    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken) {
+    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String usernameRegex) {
         this.serverBaseURL = serverBaseURL;
         this.consumerKey = consumerKey;
         this.consumerSecret = consumerSecret;
         this.username = username;
         this.password = password;
         this.oauthToken = oauthToken;
+        setUsernameRegex(usernameRegex);
     }
 
     public String getServerBaseURL() {
@@ -63,6 +67,18 @@ public class PluginSettings {
 
     public void setOauthToken(String oauthToken) {
         this.oauthToken = oauthToken;
+    }
+
+    public String getUsernameRegex() {
+        return usernameRegex;
+    }
+
+    public void setUsernameRegex(String usernameRegex) {
+        if (isEmpty(usernameRegex)) {
+            this.usernameRegex = "";
+        } else {
+            this.usernameRegex = usernameRegex;
+        }
     }
 
     public boolean containsUsernameAndPassword() {

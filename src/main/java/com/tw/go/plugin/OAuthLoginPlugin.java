@@ -19,6 +19,7 @@ import org.brickred.socialauth.*;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -35,6 +36,7 @@ public class OAuthLoginPlugin implements GoPlugin {
     public static final String PLUGIN_SETTINGS_USERNAME = "username";
     public static final String PLUGIN_SETTINGS_PASSWORD = "password";
     public static final String PLUGIN_SETTINGS_OAUTH_TOKEN = "oauth_token";
+    public static final String PLUGIN_SETTINGS_USERNAME_REGEX = "username_regex";
 
     public static final String PLUGIN_SETTINGS_GET_CONFIGURATION = "go.plugin-settings.get-configuration";
     public static final String PLUGIN_SETTINGS_GET_VIEW = "go.plugin-settings.get-view";
@@ -232,7 +234,9 @@ public class OAuthLoginPlugin implements GoPlugin {
         Map<String, String> responseBodyMap = (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
         return new PluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY),
                 responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET), responseBodyMap.get(PLUGIN_SETTINGS_USERNAME),
-                responseBodyMap.get(PLUGIN_SETTINGS_PASSWORD), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN));
+                responseBodyMap.get(PLUGIN_SETTINGS_PASSWORD), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN),
+                responseBodyMap.get(PLUGIN_SETTINGS_USERNAME_REGEX)
+        );
     }
 
     private GoPluginApiResponse handleAuthenticateWebRequest(final GoPluginApiRequest goPluginApiRequest) {
@@ -246,6 +250,12 @@ public class OAuthLoginPlugin implements GoPlugin {
             AuthProvider authProvider = manager.connect(goPluginApiRequest.requestParameters());
             Profile profile = authProvider.getUserProfile();
             User user = provider.getUser(profile);
+            String usernameRegex = pluginSettings.getUsernameRegex();
+            if (usernameRegex != "" && !Pattern.matches(usernameRegex, user.getUsername())) {
+                throw new RuntimeException(
+                    String.format("Username %s does not match usernameRegex", user.getUsername())
+                );
+            }
             authenticateUser(user);
 
             Map<String, String> responseHeaders = new HashMap<String, String>();
