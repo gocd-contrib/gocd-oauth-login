@@ -1,44 +1,39 @@
 # GoCD OAuth Login
 This is GoCD's Authentication plugin that allows users to login using OAuth.
 
-Supported:
+## Currently supported
 * GitHub
 * Google
 
-Adding support for more providers:
-
-The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialauth) which acts as a wrapper for multiple OAuth integrations. Hence adding more integrations is very little effort. 
-You will need to add a [provider](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) & a [maven profile](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/pom.xml#L65) (use `Google` implementation for reference).
+## Adding new providers
+The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialauth) which acts as a wrapper for multiple OAuth integrations. Hence adding more integrations is very little effort. You will need to add a [provider](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) and a [maven profile](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/pom.xml#L65) (use **Google** implementation for reference).
 
 ## Requirements
-This needs GoCD >= v15.2 which is due release as of writing.
+* GoCD >= v15.2
 
-## Get Started
-**Installation:**
-- Download the latest plugin jar from [Releases](https://github.com/srinivasupadhya/gocd-oauth-login/releases) section. Place it in `<go-server-location>/plugins/external` & restart Go Server.
+## Getting Started
 
-## Behavior
+## Installation
 
-- Generate OAuth Client ID & Client Secret.
-![Generate OAuth Token][1]
+Download the latest plugin jar from [Releases](https://github.com/srinivasupadhya/gocd-oauth-login/releases) section. Place it in `<go-server-location>/plugins/external` and restart Go Server.
 
-- Generate "Personal access token" (optional - if you do not want to use username & password).
+## Configuration (GitHub as an example)
 
-- You will see `Github OAuth Login` / `Google OAuth Login` on plugin listing page
-![Plugins listing page][2]
+1. Generate an OAuth Client ID and Client Secret (go to Personal settings > Applications > Developer applications): ![Generate OAuth Token][1]
 
-- You will need to generate consumer key & consumer secret to configure the plugin
-![Configure plugin pop-up][3]
+1. Generate a "Personal access token" (recommended). The plugin only needs the **user** permission to work.
 
-![Login Page][4]
+1. You will see **Github OAuth Login** / **Google OAuth Login** on plugin listing page: ![Plugins listing page][2]
 
-- You will be asked to authorize application to access your data
-![GitHub authorize page][5]
+1. Enter the client ID and secret obtained from the first step under Consumer Key and Consumer Secret: ![Configure plugin pop-up][3]
 
-- And done!
-![Pipeline Dashboard][6]
+1. Due to a bug in the current version of GoCD, you'll need to set a valid **Password file path** under **Server Configuration**. Once you click Save, you should see this screen: ![Login Page][4]
 
-- `GitHub` plugin supports user search. So you can search users & add them.
+1. Log in with your GitHub credentials, and you will be taken to GitHub to authorize the application to access your data: ![GitHub authorize page][5]
+
+1. If everything worked as expected, you should see your pipeline dashboard: ![Pipeline Dashboard][6]
+
+The **GitHub** plugin also supports user search, allowing you to search and add users right from GoCD's UI:
 ![Add User][7]
 
 [1]: images/generate-oauth-token.png  "Generate OAuth Token"
