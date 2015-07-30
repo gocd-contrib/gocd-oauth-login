@@ -19,6 +19,10 @@ Download the latest plugin jar from [Releases](https://github.com/srinivasupadhy
 
 ## Configuration (GitHub as an example)
 
+**Note**: Due to a bug in the current version of GoCD, you'll need to set a valid **Password file path** under **Server Configuration** (or configure an LDAP server).
+
+It is also recommended you have at least one local admin configured to avoid getting yourself locked out during this process. If you're using password files, make sure the file contains at least one entry, as per these [instructions](https://github.com/gocd/documentation/blob/master/user/configuration/dev_authentication.md#file-based-authentication).
+
 1. Generate an OAuth Client ID and Client Secret (go to Personal settings > Applications > Developer applications): ![Generate OAuth Token][1]
 
 1. Generate a "Personal access token" (recommended). The plugin only needs the **user** permission to work.
@@ -27,7 +31,7 @@ Download the latest plugin jar from [Releases](https://github.com/srinivasupadhy
 
 1. Enter the client ID and secret obtained from the first step under Consumer Key and Consumer Secret: ![Configure plugin pop-up][3]
 
-1. Due to a bug in the current version of GoCD, you'll need to set a valid **Password file path** under **Server Configuration**. Once you click Save, you should see this screen: ![Login Page][4]
+1. Once you click Save, you should see this screen: ![Login Page][4]
 
 1. Log in with your GitHub credentials, and you will be taken to GitHub to authorize the application to access your data: ![GitHub authorize page][5]
 
