@@ -82,4 +82,9 @@ public class GitHubProvider implements Provider {
         }
         return users;
     }
+
+    @Override
+    public boolean authorize(PluginSettings pluginSettings, User user) {
+        return true;
+    }
 }

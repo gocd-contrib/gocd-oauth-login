@@ -252,7 +252,7 @@ public class OAuthLoginPlugin implements GoPlugin {
             Profile profile = authProvider.getUserProfile();
             User user = provider.getUser(profile);
 
-            if (!RegexUtils.matchesRegex(user.getUsername(), pluginSettings.getUsernameRegex())) {
+            if (!provider.authorize(pluginSettings, user)) {
                 return renderJSON(UNAUTHORIZED_RESPONSE_CODE, null);
             }
 
