@@ -122,7 +122,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.outputDirectory}\lib</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}${file.separator}lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
