@@ -3,6 +3,7 @@ package com.tw.go.plugin.provider.google;
 import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
+import com.tw.go.plugin.util.RegexUtils;
 import org.brickred.socialauth.Profile;
 
 import java.util.List;
@@ -48,5 +49,10 @@ public class GoogleProvider implements Provider {
     @Override
     public List<User> searchUser(PluginSettings pluginSettings, String searchTerm) {
         return null;
+    }
+
+    @Override
+    public boolean authorize(PluginSettings pluginSettings, User user) {
+        return RegexUtils.matchesRegex(user.getUsername(), pluginSettings.getUsernameRegex());
     }
 }

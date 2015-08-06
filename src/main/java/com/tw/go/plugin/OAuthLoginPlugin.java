@@ -12,7 +12,6 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.FieldValidator;
 import com.tw.go.plugin.util.JSONUtils;
-import com.tw.go.plugin.util.RegexUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.brickred.socialauth.*;
@@ -252,11 +251,9 @@ public class OAuthLoginPlugin implements GoPlugin {
             Profile profile = authProvider.getUserProfile();
             User user = provider.getUser(profile);
 
-            if (!RegexUtils.matchesRegex(user.getUsername(), pluginSettings.getUsernameRegex())) {
-                return renderJSON(UNAUTHORIZED_RESPONSE_CODE, null);
+            if (provider.authorize(pluginSettings, user)) {
+                authenticateUser(user);
             }
-
-            authenticateUser(user);
 
             Map<String, String> responseHeaders = new HashMap<String, String>();
             responseHeaders.put("Location", pluginSettings.getServerBaseURL());
