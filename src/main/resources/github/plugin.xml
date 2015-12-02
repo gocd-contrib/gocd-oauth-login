@@ -2,7 +2,7 @@
 <go-plugin id="github.oauth.login" version="1">
     <about>
         <name>Github OAuth Login</name>
-        <version>1.1</version>
+        <version>1.2</version>
         <target-go-version>15.2.0</target-go-version>
         <description>Allows users to login with GitHub</description>
         <vendor>
