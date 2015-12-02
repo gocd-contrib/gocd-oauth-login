@@ -3,12 +3,16 @@ package com.tw.go.plugin.provider.google;
 import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
+import com.tw.go.plugin.util.ImageReader;
 import com.tw.go.plugin.util.RegexUtils;
 import org.brickred.socialauth.Profile;
 
 import java.util.List;
 
 public class GoogleProvider implements Provider {
+
+    private static final String IMAGE = ImageReader.readImage("logo_google_plus_64px.png");
+
     @Override
     public String getPluginId() {
         return "google.oauth.login";
@@ -21,7 +25,7 @@ public class GoogleProvider implements Provider {
 
     @Override
     public String getImageURL() {
-        return "http://icons.iconarchive.com/icons/sicons/basic-round-social/48/google-icon.png";
+        return IMAGE;
     }
 
     @Override

@@ -111,8 +111,8 @@ public class OAuthLoginPlugin implements GoPlugin {
     private GoPluginApiResponse handleGetPluginSettingsConfiguration() {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put(PLUGIN_SETTINGS_SERVER_BASE_URL, createField("Server Base URL", null, true, false, "0"));
-        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("Consumer Key", null, true, false, "1"));
-        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("Consumer Secret", null, true, false, "2"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("OAuth Client ID", null, true, false, "1"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("OAuth Client Secret", null, true, false, "2"));
         return renderJSON(SUCCESS_RESPONSE_CODE, response);
     }
 
@@ -147,14 +147,14 @@ public class OAuthLoginPlugin implements GoPlugin {
         validate(response, new FieldValidator() {
             @Override
             public void validate(Map<String, Object> fieldValidation) {
-                validateRequiredField(configuration, fieldValidation, "consumer_key", "Consumer Key");
+                validateRequiredField(configuration, fieldValidation, "consumer_key", "OAuth Client ID");
             }
         });
 
         validate(response, new FieldValidator() {
             @Override
             public void validate(Map<String, Object> fieldValidation) {
-                validateRequiredField(configuration, fieldValidation, "consumer_secret", "Consumer Secret");
+                validateRequiredField(configuration, fieldValidation, "consumer_secret", "OAuth Client Secret");
             }
         });
 
