@@ -4,6 +4,7 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
+import com.tw.go.plugin.util.ImageReader;
 import org.apache.commons.lang.StringUtils;
 import org.brickred.socialauth.Profile;
 import org.kohsuke.github.GHOrganization;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GitHubProvider implements Provider {
+    private static final String IMAGE = ImageReader.readImage("GitHub-Mark-Light-64px.png");
     private static Logger LOGGER = Logger.getLoggerFor(GitHubProvider.class);
 
     @Override
@@ -30,7 +32,7 @@ public class GitHubProvider implements Provider {
 
     @Override
     public String getImageURL() {
-        return "http://icons.iconarchive.com/icons/alecive/flatwoken/48/Apps-Github-icon.png";
+        return IMAGE;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class GitHubProvider implements Provider {
 
     @Override
     public boolean authorize(PluginSettings pluginSettings, User user) {
-        if(StringUtils.isEmpty(pluginSettings.getUsernameRegex())) {
+        if (StringUtils.isEmpty(pluginSettings.getUsernameRegex())) {
             return true;
         } else {
             return isAMemberOfOrganization(pluginSettings, user);
