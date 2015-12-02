@@ -7,7 +7,7 @@
         <description>Allows users to login with GitHub</description>
         <vendor>
             <name>Srinivas Upadhya</name>
-            <url>https://github.com/srinivasupadhya/gocd-oauth-login</url>
+            <url>https://github.com/gocd-contrib/gocd-oauth-login</url>
         </vendor>
     </about>
 </go-plugin>

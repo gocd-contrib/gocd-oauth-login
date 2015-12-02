@@ -8,7 +8,7 @@ This is GoCD's Authentication plugin that allows users to login using OAuth.
 
 ## Adding new providers
 
-The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialauth) which acts as a wrapper for multiple OAuth integrations. Hence adding more integrations is very little effort. You will need to add a [provider](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) and a [maven profile](https://github.com/srinivasupadhya/gocd-oauth-login/blob/master/pom.xml#L65) (use **Google** implementation for reference).
+The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialauth) which acts as a wrapper for multiple OAuth integrations. Hence adding more integrations is very little effort. You will need to add a [provider](https://github.com/gocd-contrib/gocd-oauth-login/blob/master/src/main/java/com/tw/go/plugin/provider/Provider.java) and a [maven profile](https://github.com/gocd-contrib/gocd-oauth-login/blob/master/pom.xml#L65) (use **Google** implementation for reference).
 
 ## Requirements
 * GoCD >= v15.2
@@ -17,7 +17,7 @@ The plugin internally uses [social-auth](https://github.com/3pillarlabs/socialau
 
 ## Installation
 
-Download the latest plugin jar from [Releases](https://github.com/srinivasupadhya/gocd-oauth-login/releases) section. Place it in `<go-server-location>/plugins/external` and restart Go Server.
+Download the latest plugin jar from [Releases](https://github.com/gocd-contrib/gocd-oauth-login/releases) section. Place it in `<go-server-location>/plugins/external` and restart Go Server.
 
 ## Configuration
 
