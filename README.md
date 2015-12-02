@@ -1,4 +1,4 @@
-# GoCD OAuth Login
+# GoCD OAuth Login [![Build Status](https://snap-ci.com/gocd-contrib/gocd-oauth-login/branch/master/build_image)](https://snap-ci.com/gocd-contrib/gocd-oauth-login/branch/master)
 
 This is GoCD's Authentication plugin that allows users to login using OAuth.
 
