@@ -46,6 +46,16 @@ public class GitHubProvider implements Provider {
     }
 
     @Override
+    public String getAuthScopePropertyName() {
+        return "api.github.com.custom_permissions";
+    }
+
+    @Override
+    public String getAuthScopePropertyValue() {
+        return "read:org, user:email";
+    }
+
+    @Override
     public String getConsumerSecretPropertyName() {
         return "api.github.com.consumer_secret";
     }

@@ -44,6 +44,14 @@ public class GoogleProvider implements Provider {
     }
 
     @Override
+    public String getAuthScopePropertyName() {
+        return "";
+    }
+
+    @Override
+    public String getAuthScopePropertyValue() { return ""; }
+
+    @Override
     public User getUser(Profile profile) {
         String emailId = profile.getEmail();
         String fullName = profile.getFullName();
