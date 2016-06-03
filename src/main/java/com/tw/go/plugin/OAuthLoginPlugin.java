@@ -207,12 +207,17 @@ public class OAuthLoginPlugin implements GoPlugin {
             Properties oauthConsumerProperties = new Properties();
             oauthConsumerProperties.put(provider.getConsumerKeyPropertyName(), pluginSettings.getConsumerKey());
             oauthConsumerProperties.put(provider.getConsumerSecretPropertyName(), pluginSettings.getConsumerSecret());
+            String scopeprop = provider.getAuthScopePropertyName();
+            Permission perm = Permission.AUTHENTICATE_ONLY;
+            if ( scopeprop != null && scopeprop.length() > 0 ) {
+                perm = Permission.CUSTOM;
+                oauthConsumerProperties.put(provider.getAuthScopePropertyName(), provider.getAuthScopePropertyValue());
+            }
             SocialAuthConfig socialAuthConfiguration = SocialAuthConfig.getDefault();
             socialAuthConfiguration.load(oauthConsumerProperties);
             SocialAuthManager manager = new SocialAuthManager();
             manager.setSocialAuthConfig(socialAuthConfiguration);
-            String redirectURL = manager.getAuthenticationUrl(provider.getProviderName(), getURL(pluginSettings.getServerBaseURL()), Permission.AUTHENTICATE_ONLY);
-
+            String redirectURL = manager.getAuthenticationUrl(provider.getProviderName(), getURL(pluginSettings.getServerBaseURL()), perm);
             store(manager);
 
             Map<String, String> responseHeaders = new HashMap<String, String>();
@@ -266,7 +271,7 @@ public class OAuthLoginPlugin implements GoPlugin {
         }
     }
 
-    private void store(SocialAuthManager socialAuthManager) {
+    private void  store(SocialAuthManager socialAuthManager) {
         Map<String, Object> requestMap = new HashMap<String, Object>();
         requestMap.put("plugin-id", provider.getPluginId());
         Map<String, Object> sessionData = new HashMap<String, Object>();

@@ -20,7 +20,7 @@ public class User {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return displayName != null && displayName.length() > 0 ? displayName: username;
     }
 
     public void setDisplayName(String displayName) {

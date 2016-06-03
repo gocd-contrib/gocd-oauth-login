@@ -19,9 +19,14 @@ public interface Provider {
 
     public String getConsumerSecretPropertyName();
 
+    public String getAuthScopePropertyName();
+
+    public String getAuthScopePropertyValue();
+
     public User getUser(Profile profile);
 
     public List<User> searchUser(PluginSettings pluginSettings, String searchTerm);
 
     public boolean authorize(PluginSettings pluginSettings, User user);
+
 }
