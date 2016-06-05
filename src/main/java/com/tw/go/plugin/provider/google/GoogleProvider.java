@@ -5,6 +5,7 @@ import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.ImageReader;
 import com.tw.go.plugin.util.RegexUtils;
+import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 
 import java.util.List;
@@ -50,6 +51,9 @@ public class GoogleProvider implements Provider {
 
     @Override
     public String getAuthScopePropertyValue() { return ""; }
+
+    @Override
+    public Permission getAuthPermission() { return Permission.AUTHENTICATE_ONLY; }
 
     @Override
     public User getUser(Profile profile) {
