@@ -2,6 +2,7 @@ package com.tw.go.plugin.provider;
 
 import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
+import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public interface Provider {
     public String getAuthScopePropertyName();
 
     public String getAuthScopePropertyValue();
+
+    public Permission getAuthPermission();
 
     public User getUser(Profile profile);
 

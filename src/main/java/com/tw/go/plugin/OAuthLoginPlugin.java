@@ -208,9 +208,8 @@ public class OAuthLoginPlugin implements GoPlugin {
             oauthConsumerProperties.put(provider.getConsumerKeyPropertyName(), pluginSettings.getConsumerKey());
             oauthConsumerProperties.put(provider.getConsumerSecretPropertyName(), pluginSettings.getConsumerSecret());
             String scopeprop = provider.getAuthScopePropertyName();
-            Permission perm = Permission.AUTHENTICATE_ONLY;
+            Permission perm = provider.getAuthPermission();
             if ( scopeprop != null && scopeprop.length() > 0 ) {
-                perm = Permission.CUSTOM;
                 oauthConsumerProperties.put(provider.getAuthScopePropertyName(), provider.getAuthScopePropertyValue());
             }
             SocialAuthConfig socialAuthConfiguration = SocialAuthConfig.getDefault();

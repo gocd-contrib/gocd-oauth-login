@@ -6,6 +6,7 @@ import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.ImageReader;
 import org.apache.commons.lang.StringUtils;
+import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHUser;
@@ -44,7 +45,10 @@ public class GitHubProvider implements Provider {
     public String getConsumerKeyPropertyName() {
         return "api.github.com.consumer_key";
     }
-
+    @Override
+    public Permission getAuthPermission(){
+        return Permission.CUSTOM;
+    }
     @Override
     public String getAuthScopePropertyName() {
         return "api.github.com.custom_permissions";
