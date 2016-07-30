@@ -23,7 +23,9 @@ Download the latest plugin jar from [Releases](https://github.com/gocd-contrib/g
 
 ### Create an OAuth Application with an OAuth provider of your choice (GitHub, Google, etc.)
 
-The oauth provider will normally ask you for an "OAuth Redirect URL". The redirect URL will be `https://your-go-server/go/plugin/interact/github.oauth.login/authenticate`.
+The oauth provider will normally ask you for an "OAuth Redirect URL". The redirect URL for the two plugins will be —
+* Github OAuth Plugin -- `https://your-go-server/go/plugin/interact/github.oauth.login/authenticate`
+* Google OAuth Plugin -- `https://your-go-server/go/plugin/interact/google.oauth.login/authenticate`
 
 **Note:** We highly recommend that you use HTTPS for OAuth authorizations.
 
