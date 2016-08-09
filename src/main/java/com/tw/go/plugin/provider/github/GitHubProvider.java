@@ -16,6 +16,7 @@ import org.kohsuke.github.PagedSearchIterable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class GitHubProvider implements Provider {
     private static final String IMAGE = ImageReader.readImage("GitHub-Mark-Light-64px.png");
@@ -42,26 +43,8 @@ public class GitHubProvider implements Provider {
     }
 
     @Override
-    public String getConsumerKeyPropertyName() {
-        return "api.github.com.consumer_key";
-    }
-    @Override
-    public Permission getAuthPermission(){
+    public Permission getAuthPermission() {
         return Permission.CUSTOM;
-    }
-    @Override
-    public String getAuthScopePropertyName() {
-        return "api.github.com.custom_permissions";
-    }
-
-    @Override
-    public String getAuthScopePropertyValue() {
-        return "read:org, user:email";
-    }
-
-    @Override
-    public String getConsumerSecretPropertyName() {
-        return "api.github.com.consumer_secret";
     }
 
     @Override
@@ -101,6 +84,15 @@ public class GitHubProvider implements Provider {
         } else {
             return isAMemberOfOrganization(pluginSettings, user);
         }
+    }
+
+    @Override
+    public Properties configure(PluginSettings pluginSettings) {
+        Properties properties = new Properties();
+        properties.put("api.github.com.consumer_key", pluginSettings.getConsumerKey());
+        properties.put("api.github.com.consumer_secret", pluginSettings.getConsumerSecret());
+        properties.put("api.github.com.custom_permissions", "read:org, user:email");
+        return properties;
     }
 
     private boolean isAMemberOfOrganization(PluginSettings pluginSettings, User user) {

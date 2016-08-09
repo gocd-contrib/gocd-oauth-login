@@ -204,15 +204,10 @@ public class OAuthLoginPlugin implements GoPlugin {
     private GoPluginApiResponse handleSetupLoginWebRequest(GoPluginApiRequest goPluginApiRequest) {
         try {
             PluginSettings pluginSettings = getPluginSettings();
-            Properties oauthConsumerProperties = new Properties();
-            oauthConsumerProperties.put(provider.getConsumerKeyPropertyName(), pluginSettings.getConsumerKey());
-            oauthConsumerProperties.put(provider.getConsumerSecretPropertyName(), pluginSettings.getConsumerSecret());
-            String scopeprop = provider.getAuthScopePropertyName();
-            Permission perm = provider.getAuthPermission();
-            if ( scopeprop != null && scopeprop.length() > 0 ) {
-                oauthConsumerProperties.put(provider.getAuthScopePropertyName(), provider.getAuthScopePropertyValue());
-            }
             SocialAuthConfig socialAuthConfiguration = SocialAuthConfig.getDefault();
+
+            Permission perm = provider.getAuthPermission();
+            Properties oauthConsumerProperties = provider.configure(pluginSettings);
             socialAuthConfiguration.load(oauthConsumerProperties);
             SocialAuthManager manager = new SocialAuthManager();
             manager.setSocialAuthConfig(socialAuthConfiguration);

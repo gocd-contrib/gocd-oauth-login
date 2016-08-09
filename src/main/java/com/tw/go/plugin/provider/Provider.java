@@ -6,30 +6,24 @@ import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 
 import java.util.List;
+import java.util.Properties;
 
 public interface Provider {
-    public String getPluginId();
+    String getPluginId();
 
-    public String getName();
+    String getName();
 
-    public String getImageURL();
+    String getImageURL();
 
-    public String getProviderName();
+    String getProviderName();
 
-    public String getConsumerKeyPropertyName();
+    Permission getAuthPermission();
 
-    public String getConsumerSecretPropertyName();
+    User getUser(Profile profile);
 
-    public String getAuthScopePropertyName();
+    List<User> searchUser(PluginSettings pluginSettings, String searchTerm);
 
-    public String getAuthScopePropertyValue();
+    boolean authorize(PluginSettings pluginSettings, User user);
 
-    public Permission getAuthPermission();
-
-    public User getUser(Profile profile);
-
-    public List<User> searchUser(PluginSettings pluginSettings, String searchTerm);
-
-    public boolean authorize(PluginSettings pluginSettings, User user);
-
+    Properties configure(PluginSettings pluginSettings);
 }
