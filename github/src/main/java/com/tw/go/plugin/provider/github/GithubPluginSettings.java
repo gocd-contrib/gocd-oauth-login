@@ -2,11 +2,19 @@ package com.tw.go.plugin.provider.github;
 
 import com.tw.go.plugin.PluginSettings;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+
 public class GithubPluginSettings extends PluginSettings {
     private final String githubOrg;
+    private String username;
+    private String password;
+    private String oauthToken;
 
     public GithubPluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String githubOrg) {
-        super(serverBaseURL, consumerKey, consumerSecret, username, password, oauthToken);
+        super(serverBaseURL, consumerKey, consumerSecret);
+        this.username = username;
+        this.password = password;
+        this.oauthToken = oauthToken;
         this.githubOrg = githubOrg;
     }
 
@@ -14,22 +22,35 @@ public class GithubPluginSettings extends PluginSettings {
         return githubOrg;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        GithubPluginSettings that = (GithubPluginSettings) o;
-
-        return githubOrg != null ? githubOrg.equals(that.githubOrg) : that.githubOrg == null;
-
+    public String getUsername() {
+        return username;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (githubOrg != null ? githubOrg.hashCode() : 0);
-        return result;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getOauthToken() {
+        return oauthToken;
+    }
+
+    public void setOauthToken(String oauthToken) {
+        this.oauthToken = oauthToken;
+    }
+
+    public boolean containsUsernameAndPassword() {
+        return !isBlank(username) && !isBlank(password);
+    }
+
+    public boolean containsOAuthToken() {
+        return !isBlank(oauthToken);
     }
 }

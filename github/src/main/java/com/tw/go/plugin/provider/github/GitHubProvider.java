@@ -1,7 +1,6 @@
 package com.tw.go.plugin.provider.github;
 
 import com.thoughtworks.go.plugin.api.logging.Logger;
-import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.Util;
@@ -130,7 +129,7 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
         return result;
     }
 
-    private GitHub getGitHub(PluginSettings pluginSettings) throws IOException {
+    private GitHub getGitHub(GithubPluginSettings pluginSettings) throws IOException {
         GitHub github = null;
         if (pluginSettings.containsUsernameAndPassword()) {
             github = GitHub.connectUsingPassword(pluginSettings.getUsername(), pluginSettings.getPassword());

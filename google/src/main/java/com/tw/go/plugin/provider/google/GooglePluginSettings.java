@@ -7,8 +7,8 @@ public class GooglePluginSettings extends PluginSettings {
     private String usernameRegex;
     private String allowedDomains;
 
-    public GooglePluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String usernameRegex, String allowedDomains) {
-        super(serverBaseURL, consumerKey, consumerSecret, username, password, oauthToken);
+    public GooglePluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String usernameRegex, String allowedDomains) {
+        super(serverBaseURL, consumerKey, consumerSecret);
         this.usernameRegex = usernameRegex;
         this.allowedDomains = allowedDomains;
     }
@@ -56,4 +56,5 @@ public class GooglePluginSettings extends PluginSettings {
         result = 31 * result + (allowedDomains != null ? allowedDomains.hashCode() : 0);
         return result;
     }
+
 }

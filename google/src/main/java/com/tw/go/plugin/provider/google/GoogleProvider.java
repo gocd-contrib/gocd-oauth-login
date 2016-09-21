@@ -92,8 +92,7 @@ public class GoogleProvider implements Provider<GooglePluginSettings> {
     @Override
     public GooglePluginSettings pluginSettings(Map<String, String> responseBodyMap) {
         return new GooglePluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY),
-                responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET), responseBodyMap.get(PLUGIN_SETTINGS_USERNAME),
-                responseBodyMap.get(PLUGIN_SETTINGS_PASSWORD), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN),
+                responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET),
                 responseBodyMap.get(PLUGIN_SETTINGS_USERNAME_REGEX),
                 responseBodyMap.get(PLUGIN_SETTINGS_ALLOWED_DOMAINS)
         );
