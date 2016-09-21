@@ -1,0 +1,9 @@
+rootProject.name = 'gocd-oauth-login'
+
+include ':base'
+include ':github-oauth-login'
+include ':google-oauth-login'
+
+project(':base').projectDir = "$rootDir/base" as File
+project(':github-oauth-login').projectDir = "$rootDir/github" as File
+project(':google-oauth-login').projectDir = "$rootDir/google" as File

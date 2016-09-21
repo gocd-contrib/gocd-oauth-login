@@ -1,0 +1,128 @@
+plugins {
+  id 'com.github.ben-manes.versions' version '0.13.0'
+}
+
+def script = this
+def gitRevision = { ->
+  def hashStdOut = new ByteArrayOutputStream()
+  exec {
+    commandLine "git", "log", "-n", "1", "--format=%H"
+    standardOutput = hashStdOut
+    workingDir = script.buildscript.sourceFile.parent
+  }
+
+  return hashStdOut.toString().trim()
+}
+
+allprojects {
+  group = 'cd.go.contrib.authentication.oauth'
+  version = '2.0'
+  rootProject.ext.gitRevision = gitRevision()
+
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+}
+
+subprojects {
+  apply plugin: 'java'
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
+
+  sourceSets {
+    test {
+      java {
+        compileClasspath += configurations.compileOnly
+        runtimeClasspath += configurations.compileOnly
+      }
+    }
+  }
+
+  project.ext.pluginDesc = { ->
+    [
+        id           : project.pluginId,
+        version      : project.version,
+        goCdVersion  : '16.2.1',
+        name         : project.description,
+        description  : project.description,
+        vendorName   : 'GoCD Contributors',
+        vendorUrl    : 'https://github.com/gocd-contrib/gocd-oauth-login',
+        providerClass: project.providerClass
+    ]
+  }
+
+  processResources {
+    if (project.name != 'base') {
+      from("${project(':base').projectDir}/src/main/resource-templates") {
+        filesMatching('*') {
+          expand project.pluginDesc()
+        }
+      }
+    }
+  }
+
+  test {
+    testLogging {
+      showStandardStreams = true
+
+      exceptionFormat 'full'
+
+      beforeSuite { suite ->
+        if (suite.parent) {
+          logger.quiet("Running ${suite.name}")
+        }
+      }
+
+      afterSuite { suite, result ->
+        if (suite.parent) {
+          logger.quiet("Tests run: ${result.testCount}, Failures: ${result.failedTestCount}, Skipped: ${result.skippedTestCount}, Time elapsed: ${(result.endTime - result.startTime) / 1000.00} sec")
+          if (result.resultType == TestResult.ResultType.FAILURE) {
+            logger.quiet("Test ${suite.name} FAILED")
+          }
+        } else {
+          logger.quiet("Total tests run: ${result.testCount}, Failures: ${result.failedTestCount}, Skipped: ${result.skippedTestCount}, Time elapsed: ${(result.endTime - result.startTime) / 1000.00} sec")
+        }
+      }
+    }
+  }
+
+  jar {
+    manifest {
+      attributes(
+          'ImplementationVersion': project.version,
+          'Plugin-Revision': project.gitRevision,
+          'Implementation-Title': project.name,
+          'Implementation-Version': project.version,
+          'Source-Compatibility': project.sourceCompatibility,
+          'Target-Compatibility': project.targetCompatibility
+      )
+    }
+
+    includeEmptyDirs false
+    duplicatesStrategy 'exclude'
+
+    project.artifacts.add 'archives', jar
+
+    from(sourceSets.main.java) {
+      into "/"
+    }
+
+    doFirst {
+      if (project.path != ':base') {
+        from(zipTree({ rootProject.findProject(':base').jar.archivePath })) {
+          into '/'
+        }
+
+        from({project.configurations.compile}) {
+          into "lib/"
+          exclude "${rootProject.findProject(':base').jar.archivePath}"
+        }
+
+        from({ rootProject.findProject(':base').project.configurations.compile }) {
+          into "lib/"
+        }
+      }
+    }
+  }
+}
