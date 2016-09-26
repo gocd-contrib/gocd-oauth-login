@@ -1,0 +1,9 @@
+description = 'GitLab OAuth Login'
+project.ext.providerClass = 'com.tw.go.plugin.provider.gitlab.GitLabProvider'
+project.ext.pluginId = 'gitlab.oauth.login'
+
+dependencies {
+  compileOnly(group: 'cd.go.plugin', name: 'go-plugin-api', version: '16.4.0')
+
+  compile project(':base')
+}
