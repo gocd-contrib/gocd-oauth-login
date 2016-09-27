@@ -1,0 +1,25 @@
+<div class="form_item_block">
+    <label>Server Base URL:<span class="asterisk">*</span></label>
+    <input type="text" ng-model="server_base_url" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[server_base_url].$error.server">{{ GOINPUTNAME[server_base_url].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>GitLab Server Base URL:<span class="asterisk">*</span></label>
+    <input type="text" ng-model="gitlab_base_url"/>
+    <span class="form_error" ng-show="GOINPUTNAME[gitlab_base_url].$error.server">{{ GOINPUTNAME[gitlab_base_url].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>OAuth Client ID:<span class="asterisk">*</span></label>
+    <input type="text" ng-model="consumer_key" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[consumer_key].$error.server">{{ GOINPUTNAME[consumer_key].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>OAuth Client Secret:<span class="asterisk">*</span></label>
+    <input type="text" ng-model="consumer_secret" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[consumer_secret].$error.server">{{ GOINPUTNAME[consumer_secret].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>OAuth Token:</label>
+    <input type="password" ng-model="oauth_token" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[oauth_token].$error.server">{{ GOINPUTNAME[oauth_token].$error.server }}</span>
+</div>
