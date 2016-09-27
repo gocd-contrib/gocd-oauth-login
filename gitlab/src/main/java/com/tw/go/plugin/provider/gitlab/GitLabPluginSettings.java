@@ -3,9 +3,6 @@ package com.tw.go.plugin.provider.gitlab;
 import com.tw.go.plugin.PluginSettings;
 
 public class GitLabPluginSettings extends PluginSettings {
-    private String serverBaseURL;
-    private String consumerKey;
-    private String consumerSecret;
     private String oauthToken;
     private String gitlabBaseUrl;
 
