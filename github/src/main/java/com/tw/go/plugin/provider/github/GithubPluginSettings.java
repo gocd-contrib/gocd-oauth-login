@@ -9,6 +9,7 @@ public class GithubPluginSettings extends PluginSettings {
     private String username;
     private String password;
     private String oauthToken;
+    private Boolean enterprise;
     private String authorizeUrl;
     private String accessTokenUrl;
     private String apiUrl;
@@ -21,6 +22,7 @@ public class GithubPluginSettings extends PluginSettings {
             String password,
             String oauthToken,
             String githubOrg,
+            Boolean enterprise,
             String authorizeUrl,
             String accessTokenUrl,
             String apiUrl
@@ -30,6 +32,7 @@ public class GithubPluginSettings extends PluginSettings {
         this.password = password;
         this.oauthToken = oauthToken;
         this.githubOrg = githubOrg;
+        this.enterprise = enterprise;
         this.authorizeUrl = authorizeUrl;
         this.accessTokenUrl = accessTokenUrl;
         this.apiUrl = apiUrl;
@@ -69,6 +72,10 @@ public class GithubPluginSettings extends PluginSettings {
 
     public boolean containsOAuthToken() {
         return !isBlank(oauthToken);
+    }
+
+    public boolean isEnterprise() {
+        return enterprise;
     }
 
     public String getAuthorizeUrl() {
