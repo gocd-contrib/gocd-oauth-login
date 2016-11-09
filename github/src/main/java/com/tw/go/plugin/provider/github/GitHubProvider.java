@@ -96,6 +96,11 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
         Properties properties = new Properties();
         properties.put("api.github.com.consumer_key", pluginSettings.getConsumerKey());
         properties.put("api.github.com.consumer_secret", pluginSettings.getConsumerSecret());
+        if (pluginSettings.isEnterprise()) {
+            properties.put("api.github.com.authentication_url", pluginSettings.getAuthorizeUrl());
+            properties.put("api.github.com.access_token_url", pluginSettings.getAccessTokenUrl());
+            properties.put("api.github.com.custom.apiURL", pluginSettings.getApiUrl());
+        }
         if (isNotBlank(pluginSettings.getGithubOrg())) {
             properties.put("api.github.com.custom_permissions", "user:email, read:org");
         } else {
@@ -106,10 +111,13 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
 
     @Override
     public GithubPluginSettings pluginSettings(Map<String, String> responseBodyMap) {
-        return new GithubPluginSettings(responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY),
+        return new GithubPluginSettings(
+                responseBodyMap.get(PLUGIN_SETTINGS_SERVER_BASE_URL), responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_KEY),
                 responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET), responseBodyMap.get(PLUGIN_SETTINGS_USERNAME),
                 responseBodyMap.get(PLUGIN_SETTINGS_PASSWORD), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN),
-                responseBodyMap.get(PLUGIN_SETTINGS_ORG_NAME)
+                responseBodyMap.get(PLUGIN_SETTINGS_ORG_NAME), responseBodyMap.containsKey(PLUGIN_SETTINGS_ENTERPRISE),
+                responseBodyMap.get(PLUGIN_SETTINGS_AUTHORIZE_URL), responseBodyMap.get(PLUGIN_SETTINGS_ACCESS_TOKEN_URL),
+                responseBodyMap.get(PLUGIN_SETTINGS_API_URL)
         );
     }
 
@@ -131,14 +139,42 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
 
     private GitHub getGitHub(GithubPluginSettings pluginSettings) throws IOException {
         GitHub github = null;
-        if (pluginSettings.containsUsernameAndPassword()) {
-            github = GitHub.connectUsingPassword(pluginSettings.getUsername(), pluginSettings.getPassword());
-        } else if (pluginSettings.containsOAuthToken()) {
-            github = GitHub.connectUsingOAuth(pluginSettings.getOauthToken());
+        // Connect to either enterprise github server or public github
+        if (pluginSettings.isEnterprise()) {
+            github = connectToEnterpriseGitHub(pluginSettings);
+        } else {
+            github = connectToPublicGitHub(pluginSettings);
         }
+
         if (github == null) {
             throw new RuntimeException("Plugin not configured. Please provide plugin settings.");
         }
         return github;
+    }
+
+    private GitHub connectToPublicGitHub(GithubPluginSettings pluginSettings) throws IOException {
+        if (pluginSettings.containsUsernameAndPassword()) {
+            LOGGER.debug("Create GitHub connection to public GitHub using username and password");
+            return GitHub.connectUsingPassword(pluginSettings.getUsername(), pluginSettings.getPassword());
+        } else if (pluginSettings.containsOAuthToken()) {
+            LOGGER.debug("Create GitHub connection to public GitHub with token");
+            return GitHub.connectUsingOAuth(pluginSettings.getOauthToken());
+        }
+        return null;
+    }
+
+    private GitHub connectToEnterpriseGitHub(GithubPluginSettings pluginSettings) throws IOException {
+        if (pluginSettings.containsUsernameAndPassword()) {
+            LOGGER.debug("Create GitHub connection to enterprise GitHub using username and password");
+            return GitHub.connectToEnterprise(
+                    pluginSettings.getApiUrl(),
+                    pluginSettings.getUsername(),
+                    pluginSettings.getPassword()
+            );
+        } else if (pluginSettings.containsOAuthToken()) {
+            LOGGER.debug("Create GitHub connection to enterprise GitHub with token");
+            return GitHub.connectToEnterprise(pluginSettings.getApiUrl(), pluginSettings.getOauthToken());
+        }
+        return null;
     }
 }

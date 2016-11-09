@@ -36,6 +36,10 @@ public class OAuthLoginPlugin implements GoPlugin {
     public static final String PLUGIN_SETTINGS_USERNAME = "username";
     public static final String PLUGIN_SETTINGS_PASSWORD = "password";
     public static final String PLUGIN_SETTINGS_OAUTH_TOKEN = "oauth_token";
+    public static final String PLUGIN_SETTINGS_ENTERPRISE = "enterprise";
+    public static final String PLUGIN_SETTINGS_AUTHORIZE_URL = "authorize_url";
+    public static final String PLUGIN_SETTINGS_ACCESS_TOKEN_URL = "access_token_url";
+    public static final String PLUGIN_SETTINGS_API_URL = "api_url";
     @Deprecated
     public static final String PLUGIN_SETTINGS_USERNAME_REGEX = "username_regex";
     public static final String PLUGIN_SETTINGS_ALLOWED_DOMAINS = "allowed_domains";
