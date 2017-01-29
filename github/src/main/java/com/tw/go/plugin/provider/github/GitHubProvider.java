@@ -84,11 +84,7 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
 
     @Override
     public boolean authorize(GithubPluginSettings pluginSettings, User user) {
-        if (StringUtils.isEmpty(pluginSettings.getGithubOrg())) {
-            return true;
-        } else {
-            return isAMemberOfOrganization(pluginSettings, user);
-        }
+        return pluginSettings.hasOrganizations() || isAMemberOfOrganization(pluginSettings, user);
     }
 
     @Override
@@ -101,7 +97,7 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
             properties.put("api.github.com.access_token_url", pluginSettings.getAccessTokenUrl());
             properties.put("api.github.com.custom.apiURL", pluginSettings.getApiUrl());
         }
-        if (isNotBlank(pluginSettings.getGithubOrg())) {
+        if (pluginSettings.hasOrganizations()) {
             properties.put("api.github.com.custom_permissions", "user:email, read:org");
         } else {
             properties.put("api.github.com.custom_permissions", "user:email");
@@ -122,19 +118,19 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
     }
 
     private boolean isAMemberOfOrganization(GithubPluginSettings pluginSettings, User user) {
-        boolean result = false;
         try {
             GitHub github = getGitHub(pluginSettings);
 
-            GHOrganization organization = github.getOrganization(pluginSettings.getGithubOrg());
-            GHUser ghUser = github.getUser(user.getUsername());
+            for(String orgName: pluginSettings.getGithubOrganizations()) {
+                GHOrganization organization = github.getOrganization(orgName);
+                GHUser ghUser = github.getUser(user.getUsername());
 
-            result = ghUser.isMemberOf(organization);
+                if(ghUser.isMemberOf(organization)) return true;
+            }
         } catch (Exception e) {
             LOGGER.warn("Error occurred while trying to check if user is member of organization", e);
         }
-
-        return result;
+        return false;
     }
 
     private GitHub getGitHub(GithubPluginSettings pluginSettings) throws IOException {
