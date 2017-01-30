@@ -4,7 +4,10 @@ dependencies {
   compileOnly(group: 'cd.go.plugin', name: 'go-plugin-api', version: '16.4.0')
 
   compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
-  compile group: 'org.brickred', name: 'socialauth', version: '4.14'
+  compile(group: 'org.brickred', name: 'socialauth', version: '4.14') {
+          exclude group: 'org.json'
+  }
+  compile group: 'org.json', name: 'json', version: '20160810'
   compile group: 'commons-io', name: 'commons-io', version: '2.5'
   compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
