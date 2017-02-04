@@ -4,7 +4,6 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import com.tw.go.plugin.util.Util;
-import org.apache.commons.lang.StringUtils;
 import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 import org.kohsuke.github.GHOrganization;
@@ -19,7 +18,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import static com.tw.go.plugin.OAuthLoginPlugin.*;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class GitHubProvider implements Provider<GithubPluginSettings> {
     private static final String IMAGE = Util.pluginImage();
@@ -84,7 +82,7 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
 
     @Override
     public boolean authorize(GithubPluginSettings pluginSettings, User user) {
-        return pluginSettings.hasOrganizations() || isAMemberOfOrganization(pluginSettings, user);
+        return !pluginSettings.hasOrganizations() || isAMemberOfOrganization(pluginSettings, user);
     }
 
     @Override
@@ -120,12 +118,14 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
     private boolean isAMemberOfOrganization(GithubPluginSettings pluginSettings, User user) {
         try {
             GitHub github = getGitHub(pluginSettings);
+            GHUser ghUser = github.getUser(user.getUsername());
+
+            if(ghUser == null) return false;
 
             for(String orgName: pluginSettings.getGithubOrganizations()) {
                 GHOrganization organization = github.getOrganization(orgName);
-                GHUser ghUser = github.getUser(user.getUsername());
 
-                if(ghUser.isMemberOf(organization)) return true;
+                if(organization != null && ghUser.isMemberOf(organization)) return true;
             }
         } catch (Exception e) {
             LOGGER.warn("Error occurred while trying to check if user is member of organization", e);
