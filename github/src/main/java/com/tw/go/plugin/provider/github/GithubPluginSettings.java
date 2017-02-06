@@ -1,11 +1,15 @@
 package com.tw.go.plugin.provider.github;
 
 import com.tw.go.plugin.PluginSettings;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class GithubPluginSettings extends PluginSettings {
-    private final String githubOrg;
+    private final List<String> githubOrganizations;
     private String username;
     private String password;
     private String oauthToken;
@@ -31,15 +35,31 @@ public class GithubPluginSettings extends PluginSettings {
         this.username = username;
         this.password = password;
         this.oauthToken = oauthToken;
-        this.githubOrg = githubOrg;
+        this.githubOrganizations = organizationsFromString(githubOrg);
         this.enterprise = enterprise;
         this.authorizeUrl = authorizeUrl;
         this.accessTokenUrl = accessTokenUrl;
         this.apiUrl = apiUrl;
     }
 
-    public String getGithubOrg() {
-        return githubOrg;
+    private List<String> organizationsFromString(String orgs) {
+        ArrayList<String> organizations = new ArrayList<>();
+
+        if(StringUtils.isEmpty(orgs)) return organizations;
+
+        for(String org : orgs.split(",")) {
+            if(!StringUtils.isEmpty(org.trim())) organizations.add(org);
+        }
+
+        return organizations;
+    }
+
+    public boolean hasOrganizations() {
+        return !this.githubOrganizations.isEmpty();
+    }
+
+    public List<String> getGithubOrganizations() {
+        return githubOrganizations;
     }
 
     public String getUsername() {
