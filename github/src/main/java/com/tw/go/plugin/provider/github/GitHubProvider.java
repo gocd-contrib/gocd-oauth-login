@@ -82,7 +82,10 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
 
     @Override
     public boolean authorize(GithubPluginSettings pluginSettings, User user) {
-        return !pluginSettings.hasOrganizations() || isAMemberOfOrganization(pluginSettings, user);
+        if(pluginSettings.hasOrganizations()){
+            return isAMemberOfOrganization(pluginSettings, user);
+        }
+        return true;
     }
 
     @Override
@@ -125,7 +128,9 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
             for(String orgName: pluginSettings.getGithubOrganizations()) {
                 GHOrganization organization = github.getOrganization(orgName);
 
-                if(organization != null && ghUser.isMemberOf(organization)) return true;
+                if(organization != null && ghUser.isMemberOf(organization)){
+                    return true;
+                }
             }
         } catch (Exception e) {
             LOGGER.warn("Error occurred while trying to check if user is member of organization", e);
