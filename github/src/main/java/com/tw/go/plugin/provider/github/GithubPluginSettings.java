@@ -45,10 +45,14 @@ public class GithubPluginSettings extends PluginSettings {
     private List<String> organizationsFromString(String orgs) {
         ArrayList<String> organizations = new ArrayList<>();
 
-        if(StringUtils.isEmpty(orgs)) return organizations;
+        if (StringUtils.isEmpty(orgs)) {
+            return organizations;
+        }
 
-        for(String org : orgs.split(",")) {
-            if(!StringUtils.isEmpty(org.trim())) organizations.add(org);
+        for (String org : orgs.split(",")) {
+            if (!StringUtils.isEmpty(org.trim())) {
+                organizations.add(org);
+            }
         }
 
         return organizations;
