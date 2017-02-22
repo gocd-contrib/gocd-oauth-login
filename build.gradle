@@ -16,7 +16,7 @@ def gitRevision = { ->
 
 allprojects {
   group = 'cd.go.contrib.authentication.oauth'
-  version = '2.3'
+  version = '2.4'
   rootProject.ext.gitRevision = gitRevision()
 
   repositories {
