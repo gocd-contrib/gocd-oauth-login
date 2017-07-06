@@ -29,4 +29,6 @@ public interface Provider<T extends PluginSettings> {
     Properties configure(T pluginSettings);
 
     T pluginSettings(Map<String, String> responseBodyMap);
+
+    Map<String, Object> handleGetPluginSettings();
 }

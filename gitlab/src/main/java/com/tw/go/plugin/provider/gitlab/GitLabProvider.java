@@ -12,10 +12,7 @@ import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static com.tw.go.plugin.OAuthLoginPlugin.*;
 
@@ -115,5 +112,26 @@ public class GitLabProvider implements Provider<GitLabPluginSettings> {
                 responseBodyMap.get(PLUGIN_SETTINGS_CONSUMER_SECRET), responseBodyMap.get(PLUGIN_SETTINGS_OAUTH_TOKEN),
                 responseBodyMap.get(PLUGIN_SETTINGS_GITLAB_BASE_URL)
         );
+    }
+
+    @Override
+    public Map<String, Object> handleGetPluginSettings() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put(PLUGIN_SETTINGS_SERVER_BASE_URL, createField("Server Base URL", null, true, false, "0"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("OAuth Client ID", null, true, false, "1"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("OAuth Client Secret", null, true, false, "2"));
+        response.put(PLUGIN_SETTINGS_GITLAB_BASE_URL, createField("GitLab Server Base URL", null, true, false, "3"));
+        response.put(PLUGIN_SETTINGS_OAUTH_TOKEN, createField("GitLab Server Base URL", null, false, false, "4"));
+        return response;
+    }
+
+    private Map<String, Object> createField(String displayName, String defaultValue, boolean isRequired, boolean isSecure, String displayOrder) {
+        Map<String, Object> fieldProperties = new HashMap<String, Object>();
+        fieldProperties.put("display-name", displayName);
+        fieldProperties.put("default-value", defaultValue);
+        fieldProperties.put("required", isRequired);
+        fieldProperties.put("secure", isSecure);
+        fieldProperties.put("display-order", displayOrder);
+        return fieldProperties;
     }
 }

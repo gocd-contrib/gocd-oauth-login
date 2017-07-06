@@ -12,10 +12,7 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.PagedSearchIterable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static com.tw.go.plugin.OAuthLoginPlugin.*;
 
@@ -116,6 +113,35 @@ public class GitHubProvider implements Provider<GithubPluginSettings> {
                 responseBodyMap.get(PLUGIN_SETTINGS_AUTHORIZE_URL), responseBodyMap.get(PLUGIN_SETTINGS_ACCESS_TOKEN_URL),
                 responseBodyMap.get(PLUGIN_SETTINGS_API_URL)
         );
+    }
+
+    @Override
+    public Map<String, Object> handleGetPluginSettings() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put(PLUGIN_SETTINGS_SERVER_BASE_URL, createField("Server Base URL", null, true, false, "0"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("OAuth Client ID", null, true, false, "1"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("OAuth Client Secret", null, true, false, "2"));
+        response.put(PLUGIN_SETTINGS_USERNAME, createField("Username", null, false, false, "3"));
+        response.put(PLUGIN_SETTINGS_PASSWORD, createField("Password", null, false, true, "4"));
+        response.put(PLUGIN_SETTINGS_OAUTH_TOKEN, createField("OAuth Token", null, false, true, "5"));
+        response.put(PLUGIN_SETTINGS_ORG_NAME, createField("GitHub Organization Name(s) (requires you to provide a username and either a password or oauth token)", null, false, false, "10"));
+        response.put(PLUGIN_SETTINGS_ENTERPRISE, createField("GitHub Enterprise", "false", false, false, "6"));
+        response.put(PLUGIN_SETTINGS_AUTHORIZE_URL, createField("GitHub Authorization Url", null, false, false, "7"));
+        response.put(PLUGIN_SETTINGS_ACCESS_TOKEN_URL, createField("GitHub Authorization Url", null, false, false, "8"));
+        response.put(PLUGIN_SETTINGS_API_URL, createField("GitHub API Url", null, false, false, "9"));
+
+        return response;
+    }
+
+
+    private Map<String, Object> createField(String displayName, String defaultValue, boolean isRequired, boolean isSecure, String displayOrder) {
+        Map<String, Object> fieldProperties = new HashMap<String, Object>();
+        fieldProperties.put("display-name", displayName);
+        fieldProperties.put("default-value", defaultValue);
+        fieldProperties.put("required", isRequired);
+        fieldProperties.put("secure", isSecure);
+        fieldProperties.put("display-order", displayOrder);
+        return fieldProperties;
     }
 
     private boolean isAMemberOfOrganization(GithubPluginSettings pluginSettings, User user) {
