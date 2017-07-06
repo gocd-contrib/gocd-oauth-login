@@ -114,21 +114,8 @@ public class OAuthLoginPlugin implements GoPlugin {
     }
 
     private GoPluginApiResponse handleGetPluginSettingsConfiguration() {
-        Map<String, Object> response = new HashMap<String, Object>();
-        response.put(PLUGIN_SETTINGS_SERVER_BASE_URL, createField("Server Base URL", null, true, false, "0"));
-        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("OAuth Client ID", null, true, false, "1"));
-        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("OAuth Client Secret", null, true, false, "2"));
+        Map<String, Object> response = provider.handleGetPluginSettings();
         return renderJSON(SUCCESS_RESPONSE_CODE, response);
-    }
-
-    private Map<String, Object> createField(String displayName, String defaultValue, boolean isRequired, boolean isSecure, String displayOrder) {
-        Map<String, Object> fieldProperties = new HashMap<String, Object>();
-        fieldProperties.put("display-name", displayName);
-        fieldProperties.put("default-value", defaultValue);
-        fieldProperties.put("required", isRequired);
-        fieldProperties.put("secure", isSecure);
-        fieldProperties.put("display-order", displayOrder);
-        return fieldProperties;
     }
 
     private GoPluginApiResponse handleGetPluginSettingsView() throws IOException {

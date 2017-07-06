@@ -6,6 +6,7 @@ import com.tw.go.plugin.util.Util;
 import org.brickred.socialauth.Permission;
 import org.brickred.socialauth.Profile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -97,4 +98,25 @@ public class GoogleProvider implements Provider<GooglePluginSettings> {
                 responseBodyMap.get(PLUGIN_SETTINGS_ALLOWED_DOMAINS)
         );
     }
+
+    @Override
+    public Map<String, Object> handleGetPluginSettings() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put(PLUGIN_SETTINGS_SERVER_BASE_URL, createField("Server Base URL", null, true, false, "0"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_KEY, createField("OAuth Client ID", null, true, false, "1"));
+        response.put(PLUGIN_SETTINGS_CONSUMER_SECRET, createField("OAuth Client Secret", null, true, false, "2"));
+        response.put(PLUGIN_SETTINGS_ALLOWED_DOMAINS, createField("List of google domains that should be allowed to login", null, false, false, "3"));
+        return response;
+    }
+
+    private Map<String, Object> createField(String displayName, String defaultValue, boolean isRequired, boolean isSecure, String displayOrder) {
+        Map<String, Object> fieldProperties = new HashMap<String, Object>();
+        fieldProperties.put("display-name", displayName);
+        fieldProperties.put("default-value", defaultValue);
+        fieldProperties.put("required", isRequired);
+        fieldProperties.put("secure", isSecure);
+        fieldProperties.put("display-order", displayOrder);
+        return fieldProperties;
+    }
+
 }
