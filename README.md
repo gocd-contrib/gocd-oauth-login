@@ -1,3 +1,10 @@
+# Deprecation note
+These plugins are deprecated as part of [GoCD release 17.5.0](https://www.gocd.org/releases/#17-5-0). Support for these plugins will be removed from 18.1.0 (scheduled to be released in January 2018). Replacement for these plugins are available at -
+
+* [GitHub OAuth Authorization Plugin](https://github.com/gocd-contrib/github-oauth-authorization-plugin)
+* [Google OAuth Authorization Plugin](https://github.com/gocd-contrib/google-oauth-authorization-plugin)
+* [GitLab OAuth Authorization Plugin](https://github.com/gocd-contrib/gitlab-oauth-authorization-plugin)
+
 # GoCD OAuth Login [![Build Status](https://snap-ci.com/gocd-contrib/gocd-oauth-login/branch/master/build_image)](https://snap-ci.com/gocd-contrib/gocd-oauth-login/branch/master)
 
 This is GoCD's Authentication plugin that allows users to login using OAuth.
